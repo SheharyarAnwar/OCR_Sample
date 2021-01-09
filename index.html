@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+<script src='https://unpkg.com/tesseract.js@1.0.19/src/index.js'></script>
+<style>
+    body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#progress-bar{
+height: 10px;
+background-color: red;
+width:500px;
+margin-top:100px;
+position:relative
+}
+#child{
+    position:absolute;
+height:100%;
+background-color: bisque;
+top:0;
+left:0
+}
+</style>
+</head>
+<body>
+    <img src="Images/b.jpeg" alt="ifk" width="500px">
+    <div id="progress-bar">
+        <div id="child"></div>
+    </div>
+    <p id="text">Loading</p>
+
+    <script>
+      const images= Array.from(document.getElementsByTagName("img"))[0]
+  const loading=document.getElementById("child")
+  const result=document.getElementById("text")
+      const recognize = async () => {
+        const { data: { text } } = await Tesseract.recognize(images, 'eng', {
+          corePath: './node_modules/tesseract.js-core/tesseract-core.wasm.js',
+          logger: m => loading.style.width=m.progress*100+"%",
+        });
+    
+        result.innerText=text
+      }
+recognize()
+        </script>
+</body>
+</html>
